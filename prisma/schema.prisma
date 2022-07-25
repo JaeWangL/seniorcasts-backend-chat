@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+model Rooms {
+  id                           String      @db.VarChar(255) @id
+  session_id                   String      @db.VarChar(255) @unique
+  class_id                     String      @db.VarChar(255)
+  title                        String      @db.VarChar(255)
+  profile_domain               String      @db.VarChar(255)
+  profiler_blob_name           String      @db.VarChar(255)
+  current_joiner_count         Int         @default(1)
+  created_at                   DateTime    @db.Timestamptz() @default(now())
+  updated_at                   DateTime    @db.Timestamptz() @default(now())
+  joiners                      Joiners[]
+  messages                     Messages[]
+}
+
+enum Rank {
+  Host
+  Manager
+  Member
+}
+model Joiners {
+  id                           String          @db.VarChar(255) @id
+  room_id                      String          @db.VarChar(255)
+  user_id                      String          @db.VarChar(255)
+  nick_name                    String          @db.VarChar(255)
+  profile_domain               String          @db.VarChar(255)
+  profiler_blob_name           String          @db.VarChar(255)
+  rank                         Rank            @default(Member)
+  created_at                   DateTime        @db.Timestamptz() @default(now())
+  updated_at                   DateTime        @db.Timestamptz() @default(now())
+  room                         Rooms           @relation(fields: [room_id], references: [id], onDelete: Cascade)
+}
+
+model Messages {
+  id                            String                @db.VarChar(255) @id
+  room_id                       String                @db.VarChar(255)
+  joiner_id                     String                @db.VarChar(255)
+  message                       String                @db.Text
+  created_at                    DateTime              @db.Timestamptz() @default(now())
+  updated_at                    DateTime              @db.Timestamptz() @default(now())
+  room                          Rooms                 @relation(fields: [room_id], references: [id], onDelete: Cascade)
+}

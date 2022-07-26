@@ -42,8 +42,10 @@
     "@nestjs/cqrs": "^9.0.1",
     "@nestjs/microservices": "^9.0.4",
     "@nestjs/platform-fastify": "^9.0.3",
+    "@nestjs/platform-socket.io": "^9.0.5",
     "@nestjs/swagger": "^6.0.4",
     "@nestjs/throttler": "^3.0.0",
+    "@nestjs/websockets": "^9.0.5",
     "@prisma/client": "^4.0.0",
     "bytes": "^3.1.2",
     "class-transformer": "^0.5.1",
@@ -56,6 +58,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.6",
+    "socket.io": "^4.5.1",
     "ulidx": "^0.3.0"
   },
   "devDependencies": {

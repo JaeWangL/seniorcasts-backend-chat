@@ -10,7 +10,10 @@ import { Server, Socket } from 'socket.io';
 import { ulid } from 'ulidx';
 import { ChatPublishMessages, ChatSubscribeMessages } from './chat_interfaces';
 import type { NewMessageMessage } from './messages/publish_messages';
-import { SendMessageMessage } from './messages/subscribe_messages';
+import {
+  JoinRoomMessage,
+  SendMessageMessage,
+} from './messages/subscribe_messages';
 
 @WebSocketGateway({
   transports: ['websocket'],
@@ -24,6 +27,22 @@ export class ChatGateway implements OnGatewayDisconnect {
 
   handleDisconnect(client: Socket): void {
     this.disconnectClient(client);
+  }
+
+  @SubscribeMessage(ChatSubscribeMessages.JOIN_ROOM)
+  handleJoinRoom(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: JoinRoomMessage
+  ): void {
+    const { roomId } = data;
+    /*
+    const user = await this.authSvc.verifyTokenAsync(
+      client.handshake.headers.authorization!.split(' ')[1]
+    );
+    */
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    client.join(roomId);
   }
 
   @SubscribeMessage(ChatSubscribeMessages.SEND_MESSAGE)

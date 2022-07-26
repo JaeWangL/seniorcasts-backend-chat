@@ -1,7 +1,6 @@
 import { Logger, VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import type { MicroserviceOptions } from '@nestjs/microservices';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { useContainer } from 'class-validator';
@@ -69,12 +68,6 @@ async function bootstrap() {
     'NestApplication'
   );
   logger.log(`App Timezone is ${tz}`, 'NestApplication');
-  logger.log(
-    `Database Debug is ${configService
-      .get<boolean>('database.debug')!
-      .toString()}`,
-    'NestApplication'
-  );
 
   logger.log(`==========================================================`);
 
